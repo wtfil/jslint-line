@@ -2,3 +2,17 @@ to use jslint you need node.js
 to install jslint you need git and network access to github
 1 make 
 2 sudo make install 
+
+example of ~/.jslint
+{
+  node: {
+    'continue': true,
+    forin: true,
+    nomen: true,
+    indent: 2,
+    node: true,
+    sloppy: true,
+    plusplus: true,
+    newcap: true,
+  }
+}
