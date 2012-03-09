@@ -1,5 +1,5 @@
 JSLINT_HOME=/usr/share/jslint
-BINPATH=/usr/bin
+BINPATH=/usr/bin/jslint
 
 JSLint/jslint.js:
 	[ -e "JSLint/.git"  ] || git clone https://github.com/douglascrockford/JSLint.git ./JSLint
@@ -7,9 +7,10 @@ JSLint/jslint.js:
 $(JSLINT_HOME): 
 	[  -d "$$(JSLINT_HOME)"  ] || mkdir -p $(JSLINT_HOME)
 install:
-	echo '#!'`which node` > $(BINPATH)/jslint
-	cat jslintrun.js >> $(BINPATH)/jslint && cp JSLint/jslint.js $(JSLINT_HOME)  && echo "jslint installed successfully";
-
+	echo '#!'`which node` > $(BINPATH)
+	cat jslintrun.js >> $(BINPATH) && cp JSLint/jslint.js $(JSLINT_HOME) 
+	chmod +x $(BINPATH)
+	@echo "jslint installed successfully";
 deinstall:
 	rm $(BINPATH)/jslint && rm -r $(JSLINT_HOME)
 clean:
