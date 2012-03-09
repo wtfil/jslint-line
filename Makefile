@@ -4,9 +4,9 @@ BINPATH=/usr/bin/jslint
 JSLint/jslint.js:
 	[ -e "JSLint/.git"  ] || git clone https://github.com/douglascrockford/JSLint.git ./JSLint
 	[ -e "JSLint/.git"  ] && cd ./JSLint &&  git pull origin
-$(JSLINT_HOME): 
-	[  -d "$$(JSLINT_HOME)"  ] || mkdir -p $(JSLINT_HOME)
-install:
+install: 
+	rm -rf $(JSLINT_HOME)
+	mkdir $(JSLINT_HOME)
 	echo '#!'`which node` > $(BINPATH)
 	cat jslintrun.js >> $(BINPATH) && cp JSLint/jslint.js $(JSLINT_HOME) 
 	chmod +x $(BINPATH)
