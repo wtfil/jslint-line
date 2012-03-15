@@ -1,5 +1,6 @@
 var fs = require('fs'),
   vm = require('vm'),
+  tty = require('tty'),
   options = {},
   files = [],
   fileToCheck,
@@ -12,16 +13,22 @@ var fs = require('fs'),
   jslintPath = '/usr/share/jslint/jslint.js',
   match;
 function report(fileName, errors) {
+  console.log("\n\033[01;31m----------------------JSLINT ERRORS-------------------------------\033[00;00m\n\n");
+  var linesLeft = 50; //tty.getWindowSize()-5;
   errors.forEach(function (error) {
-    if (!error) {
+    if (!error || linesLeft < 5 ) {
       return;
     }
     console.log('%s:%d:%d', fileName, error.line, error.character);
     console.log(error.reason);
+    linesLeft -= 2;
     if (error.evidence) {
       console.log(error.evidence);
+      console.log(Array(error.character).map(function () {return ''}).join(' ')+'^'); 
+      linesLeft -= 2;
     }
     console.log('');
+    linesLeft -= 1; 
   });
 }
 function applyProfile(options) {
@@ -127,6 +134,7 @@ files.forEach(function (fileName) {
     fileToCheck = fs.readFileSync(fileName, 'UTF-8');
   } catch (e) {
     console.log('no such file "' + fileName + '"');
+    everythingFine = false;
     return;
   }
   result = JSLINT(fileToCheck, options);
