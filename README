@@ -5,6 +5,7 @@ to install jslint you need git and network access to github
 
 example of ~/.jslint
 {
+  default:'node',
   node: {
     'continue': true,
     forin: true,
