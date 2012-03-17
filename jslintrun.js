@@ -14,6 +14,7 @@ var fs = require('fs'),
   match;
 function report(fileName, errors) {
   console.log("\n\033[01;31m----------------------JSLINT ERRORS-------------------------------\033[00;00m\n\n");
+  //i don't know why, but tty.getWindowSize lies
   var linesLeft = 50; //tty.getWindowSize()-5;
   errors.forEach(function (error) {
     if (!error || linesLeft < 5 ) {
@@ -37,9 +38,6 @@ function applyProfile(options) {
     profileOptions,
     homeFile,
     key;
-  if (!profile) {
-    return;
-  }
   try {
     homeFile = '(' + fs.readFileSync(profileOptionsPath, 'UTF-8') + ')';
   } catch (fsError) {
@@ -49,6 +47,12 @@ function applyProfile(options) {
     profileOptions = vm.runInThisContext(homeFile);
   } catch (vmError) {
     console.log(vmError);
+    return;
+  }
+  if (!profile) {
+    profile = profileOptions['default'] || false;
+  }
+  if (!profile) {
     return;
   }
   if (!profileOptions[profile]) {
